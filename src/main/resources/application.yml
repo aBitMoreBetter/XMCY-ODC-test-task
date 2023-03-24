@@ -1,0 +1,7 @@
+cryptoValuesFolder: values
+
+logging:
+  level:
+    org.apache.commons: info
+    org.springframework: info
+    _org.springframework: info

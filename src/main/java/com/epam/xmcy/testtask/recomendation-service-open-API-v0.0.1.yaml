@@ -1,0 +1,139 @@
+openapi: 3.0.3
+info:
+  description: API crypto recommendation service
+  version: v0.0.1
+  title: Crypto recommendation service API
+  contact:
+    name: Uladzimir Karalenka
+paths:
+  /crypto/info/normalized:
+    get:
+      summary: Return a descending sorted list of all the cryptos, comparing the normalized range
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoInfoList'
+        204:
+          description: No content
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+  /crypto/info/{symbol}:
+    get:
+      summary: Return the oldest/newest/min/max values for a requested crypto
+      parameters:
+        - name: symbol
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoInfoGeneral'
+        204:
+          description: No content
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+  /crypto/info/date/{date}:
+    get:
+      summary: Return the crypto with the highest normalized range for a specific day
+      parameters:
+        - name: date
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 2022-01-30
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CryptoInfoWithNormalizedData'
+        204:
+          description: No content
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+
+
+components:
+  schemas:
+
+    CryptoInfoList:
+      title: CryptoInfoWithNormalizedData
+      type: object
+      properties:
+        CryptoInfoList:
+          type: array
+          items: {
+            $ref: "#/components/schemas/CryptoInfoWithNormalizedData"
+          }
+
+    CryptoInfoWithNormalizedData:
+      type: object
+      title: CryptoInfoWithNormalizedData
+      properties:
+        timestamp:
+          type: number
+          example: 1642024800000
+        symbol:
+          type: string
+          example: BTC
+        price:
+          type: number
+          example: 3819.17
+        normalizedPrice:
+          type: number
+          example: 0.6904279157
+
+    CryptoInfoGeneral:
+      type: object
+      title: CryptoInfoGeneral
+      properties:
+        oldest:
+          $ref: '#/components/schemas/CryptoInfo'
+        newest:
+          $ref: '#/components/schemas/CryptoInfo'
+        min:
+          $ref: '#/components/schemas/CryptoInfo'
+        max:
+          $ref: '#/components/schemas/CryptoInfo'
+
+    CryptoInfo:
+      type: object
+      title: CryptoInfo
+      properties:
+        timestamp:
+          type: number
+          example: 1642024800000
+        symbol:
+          type: string
+          example: BTC
+        price:
+          type: number
+          example: 3819.17
+
+
+
+
+
+
+
+
+
+
+
+
